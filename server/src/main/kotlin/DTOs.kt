@@ -27,8 +27,9 @@ data class APISendAnswer(
         val problem: Int
 ) : APIUserAction
 
-
 data class APIGetState(
         val curTime: Long,
+        val points: Int,
+        val problemsCnt: Int,
         val res: List<List<Boolean>>
 )

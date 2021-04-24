@@ -56,6 +56,18 @@ fun Application.main() {
             }
         }
 
+        post("/api/addAnswer") {
+            doResponse<APISendAnswer>(gs, { isGoodStr(answer) }, isAdmin = true) { ctx ->
+                gs.addAnswer(ctx, theme, problem, answer)
+            }
+        }
+
+        post("/api/deleteAnswer") {
+            doResponse<APISendAnswer>(gs, { isGoodStr(answer) }, isAdmin = true) { ctx ->
+                gs.deleteAnswer(ctx, theme, problem, answer)
+            }
+        }
+
         /*post("api/redirectToGetResult") {
             val arg = call.receive<APIOnlyUser>()
             val ctx = RequestContext(getCurrentTS(), arg.user.userName)

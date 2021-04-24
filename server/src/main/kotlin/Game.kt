@@ -95,7 +95,7 @@ class Game {
         }
     }
 
-    fun rejudge(ctx: RequestContext): ActionResult {
+    private fun rejudge(ctx: RequestContext): ActionResult {
         submits.forEach(4) { user, userSubmits ->
             synchronized(userSubmits) {
                 var res = 0
@@ -150,7 +150,7 @@ class Game {
     fun userGet(ctx: RequestContext): APIGetState {
         val userSubmits = submits[ctx.userName]!!
         synchronized(userSubmits) {
-            return APIGetState(GAME_TIMER + startTime - ctx.curTime, userSubmits.isOk)
+            return APIGetState(GAME_TIMER + startTime - ctx.curTime, results[ctx.userName]!!, problemsCnt, userSubmits.isOk)
         }
     }
 
@@ -160,6 +160,14 @@ class Game {
             return true
         }
         return false
+    }
+
+    fun addAnswer(ctx: RequestContext, theme: Int, problem: Int, answer: String): ActionResult {
+        return answers[theme][problem].add(simplifyAns(answer))
+    }
+
+    fun deleteAnswer(ctx: RequestContext, theme: Int, problem: Int, answer: String): ActionResult {
+        return answers[theme][problem].remove(simplifyAns(answer))
     }
 
     suspend fun writeResult(w: Writer) = coroutineScope {
